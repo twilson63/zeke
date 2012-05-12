@@ -341,12 +341,17 @@ cache = {}
 # data, but the two will be merged and passed down to the compiler (which uses
 # `locals` and `hardcode`), and the template (which understands `locals`, `format`
 # and `autoescape`).
+zeke.modules = {}
+
 zeke.render = (template, data = {}, options = {}) ->
   data[k] = v for k, v of options
+  data[k] = require v for k, v of zeke.modules
+
   tpl = zeke.compile(template, data)
   tpl(data)
 
 exports.attach = (options) ->
+  @modules = zeke.modules
   @helpers = zeke.helpers
   @compile = zeke.compile
   @render = zeke.render

@@ -316,19 +316,27 @@ zeke.compile = function(template, options) {
 
 cache = {};
 
+zeke.modules = {};
+
 zeke.render = function(template, data, options) {
-  var k, tpl, v;
+  var k, tpl, v, _ref;
   if (data == null) data = {};
   if (options == null) options = {};
   for (k in options) {
     v = options[k];
     data[k] = v;
   }
+  _ref = zeke.modules;
+  for (k in _ref) {
+    v = _ref[k];
+    data[k] = require(v);
+  }
   tpl = zeke.compile(template, data);
   return tpl(data);
 };
 
 exports.attach = function(options) {
+  this.modules = zeke.modules;
   this.helpers = zeke.helpers;
   this.compile = zeke.compile;
   this.render = zeke.render;
