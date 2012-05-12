@@ -1,4 +1,5 @@
 cc = require '../'
+cc.init() unless cc.initialized
 
 describe 'Escaping', ->
   describe "h1 h(\"<script>alert('\"owned\" by c&a &copy;')</script>)", ->

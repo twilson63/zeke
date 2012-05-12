@@ -1,4 +1,5 @@
 cc = require '../'
+cc.init() unless cc.initialized
 
 describe 'custom', ->
   describe '#tag(name, attr)', ->

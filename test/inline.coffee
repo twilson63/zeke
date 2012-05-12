@@ -1,4 +1,5 @@
 cc = require '../'
+cc.init() unless cc.initialized
 
 describe 'Inline', ->
   describe '#inline(name, attr)', ->

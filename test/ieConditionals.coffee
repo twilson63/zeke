@@ -1,4 +1,5 @@
 cc = require '../'
+cc.init() unless cc.initialized
 
 describe 'IE conditionals', ->
   describe " ie 'gte IE8', -> link href: 'ie.css', rel: 'stylesheet'", ->

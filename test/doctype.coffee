@@ -1,9 +1,13 @@
 cc = require '../'
+cc.init() unless cc.initialized
 
 describe 'doctype', ->
   it 'default should render html5 doctype', ->
     template = "doctype()"
     expected = '<!DOCTYPE html>'
+    #console.log cc.render -> doctype()
+    console.log cc.render(template)
+    
     cc.render(template).should.equal expected
   it 'xml should render xml header', ->
     template = "doctype 'xml'"

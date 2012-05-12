@@ -1,4 +1,5 @@
 cc = require '../'
+cc.init() unless cc.initialized
 
 describe 'Self Closing Tags', ->
   describe '#img(name, attr)', ->

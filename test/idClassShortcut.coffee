@@ -1,4 +1,5 @@
 cc = require '../'
+cc.init() unless cc.initialized
 
 describe 'ID/class shortcut (ID only)', ->
   describe "div '#myid', 'foo'", ->
