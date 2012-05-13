@@ -330,7 +330,16 @@ zeke.render = function(template, data, options) {
     data[k] = require(v);
   }
   tpl = zeke.compile(template, data);
-  return tpl(data);
+  try {
+    return tpl(data);
+  } catch (err) {
+    if (process.env.NODE_ENV === 'production') {
+      return "<h1>Error: " + err.message + "</h1>";
+    } else {
+      console.log(err.message);
+      return "<h1>Error: " + err.message + "</h1>";
+    }
+  }
 };
 
 exports.attach = function(options) {

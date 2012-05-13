@@ -346,8 +346,16 @@ zeke.render = (template, data = {}, options = {}) ->
   data[k] = require(v) for k, v of zeke.requireStatements
 
   tpl = zeke.compile(template, data)
-  tpl(data)
-
+  try
+    tpl(data)
+  catch err
+    if process.env.NODE_ENV is 'production'
+      "<h1>Error: #{err.message}</h1>"
+    else
+      console.log err.message
+      "<h1>Error: #{err.message}</h1>"
+      #throw err
+    
 exports.attach = (options) ->
   @helpers = zeke.helpers
   @compile = zeke.compile
