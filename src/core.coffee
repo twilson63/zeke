@@ -280,7 +280,6 @@ skeleton = coffeescript_helpers + skeleton
 # helpers is a placeholder where plugins can add plugin helpers
 # to the template engine.
 zeke.helpers = {}
-zeke.requireStatements = ""
 
 # Compiles a template into a standalone JavaScript function.
 zeke.compile = (template, options = {}) ->
@@ -319,7 +318,7 @@ zeke.compile = (template, options = {}) ->
     tag_functions += "#{t} = function(){return __cc.tag('#{t}', arguments);};"
 
   # Main function assembly.
-  code = zeke.requireStatements + tag_functions + hardcoded_locals + skeleton
+  code = tag_functions + hardcoded_locals + skeleton
 
   code += "__cc.doctypes = #{JSON.stringify zeke.doctypes};"
   code += "__cc.coffeescript_helpers = #{JSON.stringify coffeescript_helpers};"
@@ -334,18 +333,17 @@ zeke.compile = (template, options = {}) ->
 
   new Function('data', code)
 
-cache = {}
-
+zeke.requireStatements = {}
 # Template in, HTML out. Accepts functions or strings as does `coffeecup.compile`.
 #
 # `options` is just a convenience parameter to pass options separately from the
 # data, but the two will be merged and passed down to the compiler (which uses
 # `locals` and `hardcode`), and the template (which understands `locals`, `format`
 # and `autoescape`).
-zeke.modules = {}
-
 zeke.render = (template, data = {}, options = {}) ->
   data[k] = v for k, v of options
+  #data.markdown = require 'github-flavored-markdown'
+  data[k] = require(v) for k, v of zeke.requireStatements
 
   tpl = zeke.compile(template, data)
   tpl(data)
@@ -356,7 +354,8 @@ exports.attach = (options) ->
   @render = zeke.render
   # add any require statements to the compile
   @addModule = (name, value) ->
-    zeke.requireStatements += "var #{name} = require('#{value}');"
+    #zeke.requireStatements += "var #{name} = require('#{value}');"
+    zeke.requireStatements[name] = value
   @initialized = false
 
 exports.init = (done) -> 

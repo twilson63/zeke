@@ -1,4 +1,4 @@
-var cache, coffee, coffeescript_helpers, elements, merge_elements, skeleton, zeke;
+var coffee, coffeescript_helpers, elements, merge_elements, skeleton, zeke;
 var __slice = Array.prototype.slice, __hasProp = Object.prototype.hasOwnProperty, __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (__hasProp.call(this, i) && this[i] === item) return i; } return -1; };
 
 coffee = require('coffee-script');
@@ -262,8 +262,6 @@ skeleton = coffeescript_helpers + skeleton;
 
 zeke.helpers = {};
 
-zeke.requireStatements = "";
-
 zeke.compile = function(template, options) {
   var code, hardcoded_locals, hc, t, tag_functions, tags_used, _i, _j, _len, _len2, _ref;
   if (options == null) options = {};
@@ -307,7 +305,7 @@ zeke.compile = function(template, options) {
     t = tags_used[_j];
     tag_functions += "" + t + " = function(){return __cc.tag('" + t + "', arguments);};";
   }
-  code = zeke.requireStatements + tag_functions + hardcoded_locals + skeleton;
+  code = tag_functions + hardcoded_locals + skeleton;
   code += "__cc.doctypes = " + (JSON.stringify(zeke.doctypes)) + ";";
   code += "__cc.coffeescript_helpers = " + (JSON.stringify(coffeescript_helpers)) + ";";
   code += "__cc.self_closing = " + (JSON.stringify(zeke.self_closing)) + ";";
@@ -316,17 +314,20 @@ zeke.compile = function(template, options) {
   return new Function('data', code);
 };
 
-cache = {};
-
-zeke.modules = {};
+zeke.requireStatements = {};
 
 zeke.render = function(template, data, options) {
-  var k, tpl, v;
+  var k, tpl, v, _ref;
   if (data == null) data = {};
   if (options == null) options = {};
   for (k in options) {
     v = options[k];
     data[k] = v;
+  }
+  _ref = zeke.requireStatements;
+  for (k in _ref) {
+    v = _ref[k];
+    data[k] = require(v);
   }
   tpl = zeke.compile(template, data);
   return tpl(data);
@@ -337,7 +338,7 @@ exports.attach = function(options) {
   this.compile = zeke.compile;
   this.render = zeke.render;
   this.addModule = function(name, value) {
-    return zeke.requireStatements += "var " + name + " = require('" + value + "');";
+    return zeke.requireStatements[name] = value;
   };
   return this.initialized = false;
 };
