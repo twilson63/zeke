@@ -262,6 +262,8 @@ skeleton = coffeescript_helpers + skeleton;
 
 zeke.helpers = {};
 
+zeke.requireStatements = "";
+
 zeke.compile = function(template, options) {
   var code, hardcoded_locals, hc, t, tag_functions, tags_used, _i, _j, _len, _len2, _ref;
   if (options == null) options = {};
@@ -305,7 +307,7 @@ zeke.compile = function(template, options) {
     t = tags_used[_j];
     tag_functions += "" + t + " = function(){return __cc.tag('" + t + "', arguments);};";
   }
-  code = tag_functions + hardcoded_locals + skeleton;
+  code = zeke.requireStatements + tag_functions + hardcoded_locals + skeleton;
   code += "__cc.doctypes = " + (JSON.stringify(zeke.doctypes)) + ";";
   code += "__cc.coffeescript_helpers = " + (JSON.stringify(coffeescript_helpers)) + ";";
   code += "__cc.self_closing = " + (JSON.stringify(zeke.self_closing)) + ";";
@@ -319,27 +321,24 @@ cache = {};
 zeke.modules = {};
 
 zeke.render = function(template, data, options) {
-  var k, tpl, v, _ref;
+  var k, tpl, v;
   if (data == null) data = {};
   if (options == null) options = {};
   for (k in options) {
     v = options[k];
     data[k] = v;
   }
-  _ref = zeke.modules;
-  for (k in _ref) {
-    v = _ref[k];
-    data[k] = require(v);
-  }
   tpl = zeke.compile(template, data);
   return tpl(data);
 };
 
 exports.attach = function(options) {
-  this.modules = zeke.modules;
   this.helpers = zeke.helpers;
   this.compile = zeke.compile;
   this.render = zeke.render;
+  this.addModule = function(name, value) {
+    return zeke.requireStatements += "var " + name + " = require('" + value + "');";
+  };
   return this.initialized = false;
 };
 

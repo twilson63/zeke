@@ -280,6 +280,7 @@ skeleton = coffeescript_helpers + skeleton
 # helpers is a placeholder where plugins can add plugin helpers
 # to the template engine.
 zeke.helpers = {}
+zeke.requireStatements = ""
 
 # Compiles a template into a standalone JavaScript function.
 zeke.compile = (template, options = {}) ->
@@ -318,7 +319,7 @@ zeke.compile = (template, options = {}) ->
     tag_functions += "#{t} = function(){return __cc.tag('#{t}', arguments);};"
 
   # Main function assembly.
-  code = tag_functions + hardcoded_locals + skeleton
+  code = zeke.requireStatements + tag_functions + hardcoded_locals + skeleton
 
   code += "__cc.doctypes = #{JSON.stringify zeke.doctypes};"
   code += "__cc.coffeescript_helpers = #{JSON.stringify coffeescript_helpers};"
@@ -345,16 +346,17 @@ zeke.modules = {}
 
 zeke.render = (template, data = {}, options = {}) ->
   data[k] = v for k, v of options
-  data[k] = require v for k, v of zeke.modules
 
   tpl = zeke.compile(template, data)
   tpl(data)
 
 exports.attach = (options) ->
-  @modules = zeke.modules
   @helpers = zeke.helpers
   @compile = zeke.compile
   @render = zeke.render
+  # add any require statements to the compile
+  @addModule = (name, value) ->
+    zeke.requireStatements += "var #{name} = require('#{value}');"
   @initialized = false
 
 exports.init = (done) -> 
