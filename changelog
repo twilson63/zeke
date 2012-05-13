@@ -1,0 +1,4 @@
+v2.0
+* Added cleaner error support
+* Added cssLink helper
+* Added scriptLink helper
