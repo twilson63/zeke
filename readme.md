@@ -28,7 +28,7 @@ x = zeke.render ->
 console.log x
 ```
 
-Zeke is Fork from of [CoffeeKup](https://github.com/mauricemach/coffeekup)
+Zeke is a fork from of [CoffeeKup](https://github.com/mauricemach/coffeekup)
 
 It reduces the features to a base html template generator, with a broadway plug-in system.
 
@@ -49,7 +49,7 @@ The goal of this project is to maintain a super simple core `CoffeeKup` template
 
 ## What is CoffeeKup?
 
-[CoffeeKup](http://coffeekup.org/) is a markup dsl that was created by [Maurice Machado](https://github.com/mauricemach) and now is currently maintained by [Kris Windham](https://github.com/gradus).  It is a great markup and was inspired by `_why` and created on `_why` day.  You get find out more about the template language here:  [A Beginners Intro](https://github.com/mark-hahn/coffeekup-intro) 
+[CoffeeKup](http://coffeekup.org/) is a markup dsl that was created by [Maurice Machado](https://github.com/mauricemach) and now is currently maintained by [Kris Windham](https://github.com/gradus).  It is a great markup and was inspired by `_why` and created on `_whyday`.  You get find out more about the template language here:  [A Beginners Intro](https://github.com/mark-hahn/coffeekup-intro) 
 
 ## Install
 
@@ -96,3 +96,10 @@ everyone is welcome to contribute with patches, bugfixes and new features
 6. commit your changes
 7. push to your branch `git push origin my_branch`
 8. create a pull request
+
+## Thanks
+
+* [Kris Windham](https://github.com/gradus) - For keeping CoffeeKup alive
+* [Maurice Machado](https://github.com/mauricemach) - For creating CoffeeKup
+* [Mark Hahn](https://github.com/mark-hahn) - For putting together solid beginners documentation
+* Open Source Community 
