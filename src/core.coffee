@@ -154,6 +154,8 @@ skeleton = (data = {}) ->
         if typeof v is 'object' and v not instanceof Array
           # `data: {icon: 'foo'}` is rendered as `data-icon="foo"`.
           @render_attrs(v, prefix + k + '-')
+        else if v is 'number' and v is 0
+          text " #{prefix + k}=\"#{@esc(v)}\""
         # `undefined`, `false` and `null` result in the attribute not being rendered.
         else if v
           # strings, numbers, arrays and functions are rendered "as is".
