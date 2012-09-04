@@ -1,7 +1,11 @@
 # Zeke
 
-A plug-able coffee-script template engine.
+Zeke takes the core CoffeeKup template engine and adds a plugin system using [Broadway](http://github.com/flatiron/broadway).
 
+Using the plug-in system you can create plug-able modules to inject macros or
+dependencies into the CoffeeKup template engine.
+
+Using the `helpers` object you can add macro functions to the template language:
 
 ``` coffeescript
 #plugin
@@ -28,6 +32,17 @@ x = zeke.render ->
 console.log x
 ```
 
+You can also add node modules to the coffeeKup template engine for processing special markup functions.  For example, check out https://github.com/twilson63/zeke-markdown
+
+``` coffeescript
+exports.attach = ->
+  @addModule 'markdown', 'github-flavored-markdown'
+  @helpers['markdown'] = (s) -> text data.markdown.parse(s)
+```
+
+Using the `addModule` method, it requires a node module and assigns it to an attribute on the the data object.  Then you can use the `helpers` object to create
+a public function that can be used to call the nodejs module.
+
 Zeke is a fork from of [CoffeeKup](https://github.com/mauricemach/coffeekup)
 
 It reduces the features to a base html template generator, with a broadway plug-in system.
@@ -35,11 +50,6 @@ It reduces the features to a base html template generator, with a broadway plug-
 There are already two plugins in development:
 
 * [zeke-markdown](https://github.com/twilson63/zeke-markdown)
-* [zeke-bootstrap](https://github.com/twilson63/zeke-bootstrap)
-
-Thinking about a third
-
-* [zeke-handlebars](https://github.com/twilson63/zeke-bootstrap)
 
 ## Why
 
@@ -99,6 +109,7 @@ everyone is welcome to contribute with patches, bugfixes and new features
 
 ## Thanks
 
+* [Nodejitsu](http://github.com/flatiron/broadway) - For Broadway!
 * [Kris Windham](https://github.com/gradus) - For keeping CoffeeKup alive
 * [Maurice Machado](https://github.com/mauricemach) - For creating CoffeeKup
 * [Mark Hahn](https://github.com/mark-hahn) - For putting together solid beginners documentation
