@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <title>Zeke by twilson63</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Zeke</h1>
+        <h2>A plug-able coffeescript template engine</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/twilson63/zeke/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/twilson63/zeke/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/twilson63/zeke" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>Zeke</h1>
+
+<p>Zeke takes the core CoffeeKup template engine and adds a plugin system using <a href="http://github.com/flatiron/broadway">Broadway</a>.</p>
+
+<p>Using the plug-in system you can create plug-able modules to inject macros or
+dependencies into the CoffeeKup template engine.</p>
+
+<p>Using the <code>helpers</code> object you can add macro functions to the template language:</p>
+
+<div class="highlight"><pre><span class="c1">#plugin</span>
+<span class="nv">plugin = </span>
+  <span class="nv">attach: </span><span class="nf">(options) -&gt;</span>
+    <span class="nx">@helpers</span><span class="p">[</span><span class="s">'css'</span><span class="p">]</span> <span class="o">=</span> <span class="nf">(content) -&gt;</span>
+      <span class="nx">text</span> <span class="s">"&lt;style type='text/css'&gt;</span><span class="si">#{</span><span class="nx">content</span><span class="si">}</span><span class="s">&lt;/style&gt;"</span>
+
+<span class="nv">zeke = </span><span class="nx">require</span> <span class="s">'zeke'</span>
+<span class="nx">zeke</span><span class="p">.</span><span class="nx">use</span> <span class="nx">plugin</span>
+<span class="nx">zeke</span><span class="p">.</span><span class="nx">init</span><span class="p">()</span>
+
+<span class="c1"># markup</span>
+<span class="nv">x = </span><span class="nx">zeke</span><span class="p">.</span><span class="nx">render</span> <span class="o">-&gt;</span> 
+  <span class="nx">doctype</span> <span class="mi">5</span>
+  <span class="nx">html</span> <span class="o">-&gt;</span>
+    <span class="nx">head</span> <span class="o">-&gt;</span>
+      <span class="nx">css</span> <span class="s">'''</span>
+<span class="s">        body: { color: green; }</span>
+<span class="s">      '''</span>
+    <span class="nx">body</span> <span class="o">-&gt;</span>
+      <span class="nx">h1</span> <span class="s">'FooBar'</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="nx">x</span>
+</pre></div>
+
+<p>You can also add node modules to the coffeeKup template engine for processing special markup functions.  For example, check out <a href="https://github.com/twilson63/zeke-markdown">https://github.com/twilson63/zeke-markdown</a></p>
+
+<div class="highlight"><pre><span class="nv">exports.attach = </span><span class="o">-&gt;</span>
+  <span class="nx">@addModule</span> <span class="s">'markdown'</span><span class="p">,</span> <span class="s">'github-flavored-markdown'</span>
+  <span class="nx">@helpers</span><span class="p">[</span><span class="s">'markdown'</span><span class="p">]</span> <span class="o">=</span> <span class="nf">(s) -&gt;</span> <span class="nx">text</span> <span class="nx">data</span><span class="p">.</span><span class="nx">markdown</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span>
+</pre></div>
+
+<p>Using the <code>addModule</code> method, it requires a node module and assigns it to an attribute on the the data object.  Then you can use the <code>helpers</code> object to create
+a public function that can be used to call the nodejs module.</p>
+
+<p>Zeke is a fork from of <a href="https://github.com/mauricemach/coffeekup">CoffeeKup</a></p>
+
+<p>It reduces the features to a base html template generator, with a broadway plug-in system.</p>
+
+<p>There are already two plugins in development:</p>
+
+<ul>
+<li><a href="https://github.com/twilson63/zeke-markdown">zeke-markdown</a></li>
+</ul><h2>Why</h2>
+
+<p>I &lt;3 <code>CoffeeKup</code>, its just <code>CoffeeScript</code>, which is just <code>Javascript</code>, etc.  But Zeke adds some awesome <code>broadway</code> plugin sugar to keep the core super simple and enables anyone to create plugin to <code>optimize</code> the compiler, or add <code>stylus</code> or anything you want, and every one gets the bet of both worlds.  It is super simple to add your own plug-in.  Just see one of the examples above.</p>
+
+<p>The goal of this project is to maintain a super simple core <code>CoffeeKup</code> template engine and add a rich plugin system so it can work for everyone.</p>
+
+<h2>What is CoffeeKup?</h2>
+
+<p><a href="http://coffeekup.org/">CoffeeKup</a> is a markup dsl that was created by <a href="https://github.com/mauricemach">Maurice Machado</a> and now is currently maintained by <a href="https://github.com/gradus">Kris Windham</a>.  It is a great markup and was inspired by <code>_why</code> and created on <code>_whyday</code>.  You get find out more about the template language here:  <a href="https://github.com/mark-hahn/coffeekup-intro">A Beginners Intro</a> </p>
+
+<h2>Install</h2>
+
+<div class="highlight"><pre>npm install zeke
+</pre></div>
+
+<h2>Api</h2>
+
+<h3>zeke.use</h3>
+
+<p>Adds a plugin to zeke</p>
+
+<h3>zeke.init</h3>
+
+<p>Inits zeke and confirms all plugins have been loaded</p>
+
+<h3>zeke.compile</h3>
+
+<p>Compiles <code>CoffeeKup</code> markup to a function.</p>
+
+<h3>zeke.render</h3>
+
+<p>Generates and returns html from <code>CoffeeKup</code></p>
+
+<h2>Tests</h2>
+
+<div class="highlight"><pre>npm <span class="nb">test</span>
+</pre></div>
+
+<h2>License</h2>
+
+<p>MIT/X11.</p>
+
+<h2>contribute</h2>
+
+<p>everyone is welcome to contribute with patches, bugfixes and new features</p>
+
+<ol>
+<li>create an <a href="https://github.com/twilson63/zeke/issues">issue</a> on github so the community can comment on your idea</li>
+<li>fork <code>zeke</code> in github</li>
+<li>create a new branch <code>git checkout -b my_branch</code>
+</li>
+<li>create tests for the changes you made</li>
+<li>make sure you pass both existing and newly inserted tests</li>
+<li>commit your changes</li>
+<li>push to your branch <code>git push origin my_branch</code>
+</li>
+<li>create a pull request</li>
+</ol><h2>Thanks</h2>
+
+<ul>
+<li>
+<a href="http://github.com/flatiron/broadway">Nodejitsu</a> - For Broadway!</li>
+<li>
+<a href="https://github.com/gradus">Kris Windham</a> - For keeping CoffeeKup alive</li>
+<li>
+<a href="https://github.com/mauricemach">Maurice Machado</a> - For creating CoffeeKup</li>
+<li>
+<a href="https://github.com/mark-hahn">Mark Hahn</a> - For putting together solid beginners documentation</li>
+<li>Open Source Community </li>
+</ul>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
