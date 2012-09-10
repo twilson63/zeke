@@ -53,7 +53,7 @@ There are already two plugins in development:
 
 ## Why
 
-I <3 `CoffeeKup`, its just `CoffeeScript`, which is just `Javascript`, etc.  But Zeke adds some awesome `broadway` plugin sugar to keep the core super simple and enables anyone to create plugin to `optimize` the compiler, or add `stylus` or anything you want, and every one gets the bet of both worlds.  It is super simple to add your own plug-in.  Just see one of the examples above.
+I <3 `CoffeeKup`, its just `CoffeeScript`, which is just `Javascript`, etc.  But Zeke adds some awesome `broadway` plugin sugar to keep the core super simple and enables anyone to create plugin to `optimize` the compiler, or add `stylus` or anything you want, and everyone gets the best of both worlds.  It is simple to add your own plug-in.  Just see one of the examples above.
 
 The goal of this project is to maintain a super simple core `CoffeeKup` template engine and add a rich plugin system so it can work for everyone.
 
